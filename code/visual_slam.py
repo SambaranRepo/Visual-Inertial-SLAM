@@ -119,13 +119,13 @@ if __name__ == '__main__':
     map = np.full((3,M), np.NaN)
     mu_map_t = np.zeros((3,M))
     mu_map_t_flat = np.zeros((3*M,1))
-    W = 5e-1 * np.eye(6)
+    W = 5e-6 * np.eye(6)
     W[1,1] = 1e-1
     W[2,2] = 1e-3
     W[3:,3:] = np.eye(3) * 5e-2
     sigma_slam = np.eye(3*M + 6) * 0.1
     sigma_slam[:3*M, :3*M] = 0
-    V = 100
+    V = 50
     pose_trajectory = []
     T = np.eye(4)
     vslam = True
