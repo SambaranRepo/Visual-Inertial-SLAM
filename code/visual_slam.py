@@ -125,7 +125,7 @@ if __name__ == '__main__':
     W[3:,3:] = np.eye(3) * 5e-2
     sigma_slam = np.eye(3*M + 6) * 0.1
     sigma_slam[:3*M, :3*M] = 0
-    V = 50
+    V = 100
     pose_trajectory = []
     T = np.eye(4)
     vslam = True
