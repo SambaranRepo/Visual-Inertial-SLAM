@@ -11,6 +11,7 @@ from pr3_utils import *
 from tqdm import tqdm
 import time
 import pickle
+from glob import glob
 
 def projection_jacobian(q, Nt): 
 	'''
@@ -99,7 +100,7 @@ def IMU_localization(T_initial,linear_velocity, angular_velocity, tau):
 if __name__ == '__main__':
 
     # Load the measurements
-    filename = "./data/10.npz"
+    filename = glob("code/data/10.npz")[0]
     t,features1,linear_velocity,angular_velocity,K,b,imu_T_cam = load_data(filename)
     #stereo camera matrix
     Ks = np.asarray([[K[0][0], K[0][1], K[0][2], 0], [K[1][0], K[1][1], K[1][2], 0], [K[0][0],K[0][1],K[0][2],-K[0][0]*b], [K[1][1],K[1][1],K[1][2],0]])
@@ -250,7 +251,7 @@ if __name__ == '__main__':
     plt.title(f'Motion Noise linear : {W[0,0]}, angular noise : {W[3,3]}, Observation Noise : {V}')
     if filename == '10':
         plt.gca().invert_xaxis()
-    plt.savefig(f'SLAM_{filename}/ground_constraint={ground_constraint}_V{V}_W{W[0,0],W[3,3]}.png', format = 'png', bbox_inches = 'tight')
+    plt.savefig(f'code/SLAM_{filename}/ground_constraint={ground_constraint}_V{V}_W{W[0,0],W[3,3]}.png', format = 'png', bbox_inches = 'tight')
     plt.show(block = True)
 
     plt.close()

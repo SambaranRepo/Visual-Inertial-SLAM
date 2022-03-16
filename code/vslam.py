@@ -5,7 +5,7 @@ from pr3_utils import *
 from scipy.linalg import expm,block_diag
 from pr3_utils import *
 from tqdm import tqdm
-import time
+from glob import glob
 
 def projection_jacobian(q, Nt): 
 	'''
@@ -93,7 +93,7 @@ def IMU_localization(T_initial,linear_velocity, angular_velocity, tau):
 if __name__ == '__main__':
 
     # Load the measurements
-    filename = "./data/10.npz"
+    filename = glob("code/data/03.npz")[0]
     t,features1,linear_velocity,angular_velocity,K,b,imu_T_cam = load_data(filename)
     #stereo camera matrix
     Ks = np.asarray([[K[0][0], K[0][1], K[0][2], 0], [K[1][0], K[1][1], K[1][2], 0], [K[0][0],K[0][1],K[0][2],-K[0][0] * b], [K[1][1],K[1][1],K[1][2],0]])
@@ -201,19 +201,9 @@ if __name__ == '__main__':
             sigma_map[row,column] = sigma_prev.reshape(-1,1)
 
     pose = np.asarray(pose_trajectory)
-    visualize_trajectory_2d(pose, show_ori = True)
-    fig,ax = plt.subplots(1,1)
-    ax.scatter(mu_map_t[0][:-2], mu_map_t[1][:-2], label = 'landmarks')
-    ax.plot(pose[:,0,3], pose[:,1,3],'r-', label='traj')
-    ax.scatter(pose[0,0,3],pose[0,1,3],marker='s',label="start")
-    ax.scatter(pose[-1,0,3],pose[-1,1,3],marker='o',label="end")
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
-    ax.axis('equal')
-    ax.grid(False)
-    ax.legend()
+    visualize_trajectory_2d(pose,mu_map_t, show_ori = True)
     filename = filename.split('/')[2].split('.')[0]
-    plt.savefig(f'SLAM_{filename}_Part_a,b.png', format = 'png', bbox_inches = 'tight')
+    plt.savefig(f'code/SLAM_{filename}_Part_a,b.png', format = 'png', bbox_inches = 'tight')
     plt.show(block = True)
 
     plt.close()
